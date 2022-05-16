@@ -15,18 +15,12 @@ type APIData = {
   lyrics: string;
 };
 
-function isJapanese(input: string) {
-  if (input.startsWith('「') && input.endsWith('」')) {
-    return Kuroshiro.Util.isJapanese(input.substring(1, input.length - 1));
-  }
-
-  return Kuroshiro.Util.isJapanese(input);
-}
+const { hasJapanese } = Kuroshiro.Util;
 
 export async function toRomaji(lyrics: Lyrics) {
   return loader.then(async (value) => {
     const data = await Promise.all(lyrics.map(({text}) => {
-      if (isJapanese(text)) {
+      if (hasJapanese(text)) {
         return value.convert(text.replace(/\s/g, ''), {
           to: 'romaji',
           mode: 'spaced',
