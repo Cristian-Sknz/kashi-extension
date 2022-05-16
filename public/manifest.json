@@ -1,6 +1,6 @@
 {
   "name": "Kashi - Romanized Lyrics for Spotify",
-  "name_short": "Kashi",
+  "short_name": "Kashi",
   "description": "Romanized Lyrics for Spotify",
   "manifest_version": 3,
   "version": "1.0.0",
