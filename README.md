@@ -13,6 +13,7 @@ Chrome/Opera extension to romanize Japanese song lyrics on Spotify
 - [ ] Loading indicating that romanization is taking place.
 - [ ] Option to disable romanization
 - [ ] Follow the browser extension design pattern
+- [ ] Support for Russian, Chinese and Korean lyrics.
 
 ## Installation
 
