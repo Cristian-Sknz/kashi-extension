@@ -1,0 +1,38 @@
+{
+  "name": "kashi-extension",
+  "version": "1.0.0",
+  "description": "A.",
+  "author": "Cristian-SknZ",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --config webpack/webpack.production.js",
+    "build:dict": "webpack --config webpack/webpack.config.js",
+    "watch": "webpack -w webpack/webpack.production.js"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.185",
+    "copy-webpack-plugin": "^10.2.4",
+    "path-browserify": "^1.0.1",
+    "ts-loader": "^4.0.1",
+    "typescript": "^3.8.0",
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "kuroshiro": "^1.2.0",
+    "kuroshiro-analyzer-kuromoji": "^1.1.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

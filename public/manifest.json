@@ -1,0 +1,25 @@
+{
+  "name": "Kashi - Romanized Lyrics for Spotify",
+  "name_short": "Kashi",
+  "description": "A",
+  "manifest_version": 3,
+  "version": "1.0.0",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [{
+    "matches": ["https://open.spotify.com/*"],
+    "run_at": "document_end",
+    "js": ["content.js"]
+  }],
+  "web_accessible_resources": [{
+    "resources": ["/kuromoji/dict/*"],
+    "matches": ["<all_urls>"]
+  }],
+  "permissions": ["scripting", "activeTab"]
+}
