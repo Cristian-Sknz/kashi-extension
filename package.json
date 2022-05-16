@@ -1,7 +1,7 @@
 {
   "name": "kashi-extension",
   "version": "1.0.0",
-  "description": "A.",
+  "description": "Romanized Lyrics for Spotify",
   "author": "Cristian-SknZ",
   "license": "MIT",
   "scripts": {
