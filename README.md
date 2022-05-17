@@ -13,13 +13,13 @@ Chrome/Opera extension to romanize Japanese song lyrics on Spotify
 - [ ] Loading indicating that romanization is taking place.
 - [ ] Option to disable romanization
 - [ ] Follow the browser extension design pattern
-- [ ] Support for Russian, Chinese and Korean lyrics.
+- [x] Support for Russian, Chinese and Korean lyrics.
 
 ## Installation
 
 1. Download the [latest release](https://github.com/Cristian-Sknz/kashi-extension/releases) here on Github
 2. Choose the type you want to use:
-  - `Light` this version is lighter, as it does not use the packages for romanization, but it may take longer to romanize the letters.
+  - `Light` this version is lighter, as it does not use the packages for romanization, but it may take longer to romanize the letters (only for japanese lyrics).
   - `Dict` this version is heavier, as it uses a packages for romanization, but the letters are romanized instantly.
 3. After completing the previous steps...
     1. Go to [_chrome://extensions_](chrome://extensions) in Google Chrome or `extensions` in Opera
