@@ -1,6 +1,6 @@
 # Kashi Chrome Extension
 
-Chrome/Opera extension to romanize Japanese song lyrics on Spotify
+Chrome/Opera extension to romanize Lyrics on Spotify. Support Japanese, Korean, Chinese and Russian lyrics.
 
 ### Motivation
 
