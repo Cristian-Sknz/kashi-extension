@@ -1,4 +1,4 @@
-import detect, { SupportedLanguages } from './language';
+import { detectPredominant, SupportedLanguages } from './language';
 
 import AromanizeService from './aromanize';
 import CyrillicToTranslitService from './cyrillic-to-translit';
@@ -30,7 +30,7 @@ const languages: Services = {
 }
 
 export async function romanize(lyrics: Lyrics) {
-  const main = [...detect(lyrics)][0];
+  const main = detectPredominant(lyrics);
   if (main) {
     return languages[main].romanize(lyrics);
   }

@@ -34,3 +34,12 @@ export function getChineseLetters(str: string) {
 export function hasChineseLetters(str: string) {
   return !!getChineseLetters(str);
 }
+
+export function getAllLanguages(str: string) {
+  return {
+    korean: getKoreanLetters(str),
+    russian: getRussianLetters(str),
+    chinese: getChineseLetters(str),
+    japanese: getJapaneseLetters(str),
+  }
+}
