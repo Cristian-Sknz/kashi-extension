@@ -1,5 +1,10 @@
-export function getRussianLetters(str: string) {
+export function getRussianLettersWithRomanLetters(str: string) {
   return str.match(/[\wа-я]+/ig);
+}
+
+// Only Cyrillic Alphabet
+export function getRussianLetters(str: string) {
+  return str.match(/[\u0401\u0451\u0410-\u044f]/g);
 }
 
 export function hasRussianLetters(str: string) {
