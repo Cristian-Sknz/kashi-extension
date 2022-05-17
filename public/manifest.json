@@ -3,7 +3,7 @@
   "short_name": "Kashi",
   "description": "Romanized Lyrics for Spotify",
   "manifest_version": 3,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "background": {
     "service_worker": "background.js"
   },

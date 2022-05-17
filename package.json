@@ -1,6 +1,6 @@
 {
   "name": "kashi-extension",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Romanized Lyrics for Spotify",
   "author": "Cristian-SknZ",
   "license": "MIT",
@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@types/chrome": "^0.0.185",
+    "@types/pinyin": "^2.10.0",
     "copy-webpack-plugin": "^10.2.4",
     "path-browserify": "^1.0.1",
     "ts-loader": "^4.0.1",
@@ -19,9 +20,12 @@
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
+    "aromanize": "^0.1.5",
     "axios": "^0.27.2",
+    "cyrillic-to-translit-js": "^3.2.1",
     "kuroshiro": "^1.2.0",
-    "kuroshiro-analyzer-kuromoji": "^1.1.0"
+    "kuroshiro-analyzer-kuromoji": "^1.1.0",
+    "pinyin": "^2.11.2"
   },
   "browserslist": {
     "production": [

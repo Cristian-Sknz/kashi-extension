@@ -1,4 +1,4 @@
-import { Lyric, toRomaji } from './services/kuroshiro';
+import { Lyric, romanize } from './services';
 
 getRootElement().then((root) => {
   initializeLyricObserver(root)
@@ -26,9 +26,11 @@ function getRootElement() {
 }
 
 function initializeLyricObserver(node: HTMLElement) {
-  var romanize = toRomaji
-
   new MutationObserver(async (context) => {
+    if (context.length == 0) {
+      return;
+    }
+
     const mutation = context[context.length - 1];
     const target = mutation.target as HTMLElement;
 
@@ -40,11 +42,16 @@ function initializeLyricObserver(node: HTMLElement) {
     }
 
     wrapper.setAttribute('kashi', 'loading');
-    await romanize(Array.from(wrapper.childNodes).map<Lyric>((value, index) => ({
-      index: index,
-      node: value,
-      text: value.textContent
+    const lyrics = Array.from(wrapper.childNodes) as HTMLElement[];
+
+    const values = await romanize(lyrics
+      .filter((node) => node.hasAttribute('data-testid'))
+      .map<Lyric>((value, index) => ({
+        index: index,
+        node: value,
+        text: value.textContent
     })));
+    
     wrapper.setAttribute('kashi', 'loaded');
   }).observe(node, { 
     attributes: true,
