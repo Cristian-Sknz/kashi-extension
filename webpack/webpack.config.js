@@ -6,8 +6,7 @@ module.exports = {
   mode: 'production',
   target: 'browserslist',
   entry: {
-    background: path.join(__dirname, '..', "src/index.ts"),
-    content: path.join(__dirname, '..',"src/content.ts")
+    content: path.join(__dirname, '..',"src/index.ts")
   },
   output: {
     path: path.join(__dirname, '..', "dist/"),
@@ -23,7 +22,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: [".ts", ".js"],
+    extensions: [".ts", ".tsx", ".js"],
     fallback: {
       "path": require.resolve("path-browserify")
     }

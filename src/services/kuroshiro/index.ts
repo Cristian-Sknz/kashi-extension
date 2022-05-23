@@ -13,7 +13,7 @@ type APIData = {
 export default class KuroshiroService implements RomanizeService {
 
   async romanize(lyrics: Lyrics): Promise<Lyrics> {
-    return this.useKuromojiDict(lyrics).catch(() => this.useKashiAPI(lyrics))
+    return this.useKuromojiDict(lyrics).catch(async () => await this.useKashiAPI(lyrics))
   }
 
   async useKuromojiDict(lyrics: Lyrics) {

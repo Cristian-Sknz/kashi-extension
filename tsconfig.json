@@ -1,6 +1,6 @@
 {
-  "exclude": ["v"],
   "compilerOptions": {
+    "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
