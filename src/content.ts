@@ -9,7 +9,11 @@ function getRootElement() {
     var observer = new MutationObserver((context) => {
       const mutation = context[context.length - 1];
       const target = mutation.target as HTMLBodyElement;
-      const root = target.querySelector('.main-view-container');
+      const root = target.querySelector([
+        '.main-view-container',
+        '.os-padding',
+        'main'
+      ].join(' '));
 
       if (root) {
         resolve(root as HTMLElement);
@@ -26,37 +30,33 @@ function getRootElement() {
 }
 
 function initializeLyricObserver(node: HTMLElement) {
-  new MutationObserver(async (context) => {
-    if (context.length == 0) {
+  new MutationObserver(async (records) => {
+    const record = records.find(({ addedNodes }) => addedNodes.length !== 0);
+    if (!record) {
       return;
     }
 
-    const mutation = context[context.length - 1];
-    const target = mutation.target as HTMLElement;
+    const lyric = (record.target as HTMLElement)
+      .querySelector('[data-testid="fullscreen-lyric"]');
 
-    const lyric = target.querySelector('[data-testid="fullscreen-lyric"]');
     const wrapper = lyric?.parentElement || null;
 
     if (!wrapper || wrapper.hasAttribute('kashi')) {
       return;
     }
 
-    wrapper.setAttribute('kashi', 'loading');
+    wrapper.setAttribute('kashi', '');
     const lyrics = Array.from(wrapper.childNodes) as HTMLElement[];
 
-    const values = await romanize(lyrics
+    await romanize(lyrics
       .filter((node) => node.hasAttribute('data-testid'))
       .map<Lyric>((value, index) => ({
         index: index,
         node: value,
         text: value.textContent
     })));
-    
-    wrapper.setAttribute('kashi', 'loaded');
   }).observe(node, { 
-    attributes: true,
     childList: true,
-    characterData: true,
     subtree: true
   });
 }
