@@ -23,7 +23,7 @@ function getRootElement() {
       const mutation = context[context.length - 1];
       const target = mutation.target as HTMLBodyElement;
       const root = target.querySelector('.main-view-container');
-      const main = root.querySelector(['.os-padding','main'].join(' '));
+      const main = root?.querySelector(['.os-padding','main'].join(' '));
 
       if (main) {
         resolve([root, main]);
@@ -43,8 +43,8 @@ function initializeLyricObserver(node: Element) {
   const emitter = new EventEmitter<LyricsState>();
   const observer = new MutationObserver(async (records) => {
     const record = records.filter(({ addedNodes }) => addedNodes.length !== 0)
-        .map<HTMLElement>((record) => record.target as HTMLElement)
-        .find((e) =>  e.querySelector('[data-testid="fullscreen-lyric"]'));
+      .map<HTMLElement>((record) => record.target as HTMLElement)
+      .find((e) =>  e?.querySelector('[data-testid="fullscreen-lyric"]'));
 
     if (!record) {
       emitter.emit({ state: LyricsState.Idle });
