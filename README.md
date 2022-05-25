@@ -26,10 +26,7 @@ Chrome/Opera extension to romanize Lyrics on Spotify. Support Japanese, Korean, 
     1. Go to [_chrome://extensions_](chrome://extensions) in Google Chrome or `extensions` in Opera
     2. With the developer mode checkbox ticked, click **Load unpacked extension...** and select the _extracted folder_.
 
-<img src="https://user-images.githubusercontent.com/61399406/168503678-9dd58841-61f6-400e-9c38-39e149ce5b99.png" width="800">
-
-![spotify2](https://user-images.githubusercontent.com/61399406/170327156-8c193c9f-55a0-4d05-9767-9bea918640a5.gif)
-
+<img src="https://user-images.githubusercontent.com/61399406/170327156-8c193c9f-55a0-4d05-9767-9bea918640a5.gif" width="800">
 
 ## Development
 
