@@ -3,7 +3,7 @@
   "short_name": "Kashi",
   "description": "Romanized Lyrics for Spotify",
   "manifest_version": 3,
-  "version": "1.2.0",
+  "version": "?",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
@@ -18,5 +18,9 @@
     "resources": ["/kuromoji/dict/*"],
     "matches": ["<all_urls>"]
   }],
-  "permissions": ["scripting", "activeTab"]
+  "permissions": [
+    "storage", 
+    "activeTab", 
+    "scripting"
+  ]
 }

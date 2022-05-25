@@ -1,18 +1,23 @@
-const CopyPlugin = require('copy-webpack-plugin');
-const config = require('./webpack.config.js')
-const path = require("path");
+const config = require('./webpack.common.js');
+const ZipPlugin = require('zip-webpack-plugin');
 
-/** @type {import('webpack').Configuration} */
+/** 
+ * @type { import('webpack').Configuration } 
+*/
 module.exports = {
   ...config,
+  mode: 'production',
   plugins: [
-    new CopyPlugin({
-      patterns: [{
-        from: path.resolve(__dirname, '..', 'public'),
-        globOptions: {
-          ignore: ['**/kuromoji/**']
-        }
-      }]
-    })
+    ...config.plugins,
+    new ZipPlugin({
+      filename: 'Kashi-Dict.zip',
+      exclude: [/\.zip$/],
+      path: '../build/'
+    }),
+    new ZipPlugin({
+      filename: 'Kashi-Light.zip',
+      exclude: ['kuromoji', /\.zip$/],
+      path: '../build/'
+    }),
   ]
-}
+};

@@ -1,13 +1,18 @@
 {
   "name": "kashi-extension",
-  "version": "1.2.0",
+  "private": true,
   "description": "Romanized Lyrics for Spotify",
+  "version": "2022.0524.0",
   "author": "Cristian-SknZ",
+  "homepage": "https://github.com/Cristian-Sknz/kashi-extension",
   "license": "MIT",
+  "repository": {
+    "url": "https://github.com/Cristian-Sknz/kashi-extension.git",
+    "type": "git"
+  },
   "scripts": {
     "build": "webpack --config webpack/webpack.production.js",
-    "build:dict": "webpack --config webpack/webpack.config.js",
-    "watch": "webpack -w webpack/webpack.production.js"
+    "watch": "webpack -w --config webpack/webpack.development.js"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.185",
@@ -15,11 +20,13 @@
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "copy-webpack-plugin": "^10.2.4",
+    "generate-json-webpack-plugin": "^2.0.0",
     "path-browserify": "^1.0.1",
     "ts-loader": "^4.0.1",
     "typescript": "^3.8.0",
     "webpack": "^5.72.1",
-    "webpack-cli": "^4.9.2"
+    "webpack-cli": "^4.9.2",
+    "zip-webpack-plugin": "^4.0.1"
   },
   "dependencies": {
     "@emotion/css": "^11.9.0",
