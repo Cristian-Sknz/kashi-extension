@@ -26,7 +26,7 @@ function getRootElement() {
       const mutation = context[context.length - 1];
       const target = mutation.target as HTMLBodyElement;
       const root = target.querySelector('.main-view-container');
-      const main = root?.querySelector(['.os-padding', 'main'].join(' '));
+      const main = root?.querySelector(['.main-view-container__scroll-node-child', 'main'].join(' '));
 
       if (main) {
         resolve([root, main]);
