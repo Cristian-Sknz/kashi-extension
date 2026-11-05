@@ -102,7 +102,7 @@ bun run check:package
 | `dist/spicetify/kashi.js` | Desktop extension, including the Japanese dictionary |
 | `build/Kashi-Spicetify.zip` | Desktop archive with code and notices |
 
-Both packages include the Japanese dictionary. The historical Light/API edition is not produced by this version. The desktop JavaScript is approximately 24 MB because it embeds the dictionary rather than downloading it or requiring a local server.
+Both packages include the full Japanese dictionary in a losslessly compressed form. The desktop JavaScript embeds it and is approximately 16.5 MB.
 
 ## Development
 

@@ -1,6 +1,7 @@
 // Replaces Kuromoji's Node/XHR loader only in browser builds. Keep the upstream parser.
 import DynamicDictionaries from 'kuromoji/src/dict/DynamicDictionaries';
 import { dictionaryFile } from 'kashi:dictionary';
+import { dictionaryAssetName, unpackDictionaryBytes } from './dictionary-packing';
 
 class DictionaryLoader {
   constructor(private readonly path: string) {}
@@ -8,11 +9,11 @@ class DictionaryLoader {
   load(callback: (error: unknown, dictionaries: DynamicDictionaries) => void) {
     const dictionaries = new DynamicDictionaries();
     const read = async (name: string) => {
-      const bytes = await dictionaryFile(name, this.path);
+      const bytes = await dictionaryFile(dictionaryAssetName(name), this.path);
       const stream = new Blob([new Uint8Array(bytes)])
         .stream()
         .pipeThrough(new DecompressionStream('gzip'));
-      return new Response(stream).arrayBuffer();
+      return unpackDictionaryBytes(name, await new Response(stream).arrayBuffer());
     };
     const names = [
       'base',

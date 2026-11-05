@@ -4,8 +4,29 @@ import { resolve, join, dirname } from 'node:path';
 import type { BunPlugin } from 'bun';
 import pkg from '../package.json';
 import manifest from '../manifest.json';
+import {
+  dictionaryAssetName,
+  dictionaryLayout,
+  packDictionaryBytes,
+} from '../src/services/dictionary-packing';
 
 const root = resolve(import.meta.dir, '..');
+const publicDir = join(root, 'public');
+const dictionaryDir = join('kuromoji', 'dict');
+const dictionarySource = join(publicDir, dictionaryDir);
+
+async function prepareDictionaries() {
+  const files: Record<string, Uint8Array> = {};
+  for (const name of await readdir(dictionarySource)) {
+    const original = await Bun.file(join(dictionarySource, name)).bytes();
+    const layout = dictionaryLayout(name);
+    files[dictionaryAssetName(name)] = layout
+      ? Bun.gzipSync(packDictionaryBytes(Bun.gunzipSync(original), layout), { level: 9 })
+      : original;
+  }
+  return files;
+}
+
 export async function build(requested?: string) {
   const notices = [
     '# Third-party notices\n\nGenerated from the installed packages. Japanese dictionaries include the Kuromoji/IPADIC notice below.',
@@ -39,6 +60,7 @@ export async function build(requested?: string) {
   }
   await Bun.write(join(root, 'THIRD_PARTY_NOTICES.md'), notices.join('\n'));
   if (requested && !['web', 'desktop'].includes(requested)) throw new Error('Use web or desktop.');
+  const dictionaries = await prepareDictionaries();
   for (const target of requested ? [requested] : ['web', 'desktop']) {
     const outdir = join(root, 'dist', target === 'web' ? 'web' : 'spicetify');
     if (dirname(dirname(outdir)) !== root) throw new Error('Output must stay inside the project.');
@@ -66,14 +88,13 @@ export async function build(requested?: string) {
               return new Uint8Array(await response.arrayBuffer());
             }`,
             };
-          // ponytail: embedding costs ~24 MB of JS; avoids a server and desktop resource permissions.
-          // Add a resource service only if package size becomes a real distribution constraint.
-          const data: Record<string, string> = {};
-          for (const name of await readdir(join(root, 'public/kuromoji/dict'))) {
-            data[name] = Buffer.from(
-              await Bun.file(join(root, 'public/kuromoji/dict', name)).arrayBuffer(),
-            ).toString('base64');
-          }
+          // Keep the desktop package self-contained.
+          const data = Object.fromEntries(
+            Object.entries(dictionaries).map(([name, bytes]) => [
+              name,
+              Buffer.from(bytes).toString('base64'),
+            ]),
+          );
           return {
             loader: 'js',
             contents: `const data = ${JSON.stringify(data)};
@@ -100,7 +121,17 @@ export async function build(requested?: string) {
     });
     if (!result.success) throw new AggregateError(result.logs, `Failed to build ${target}`);
     if (target === 'web') {
-      await cp(join(root, 'public'), outdir, { recursive: true });
+      await cp(publicDir, outdir, {
+        recursive: true,
+        filter: path => path !== dictionarySource,
+      });
+      const webDictionaries = join(outdir, dictionaryDir);
+      await mkdir(webDictionaries, { recursive: true });
+      await Promise.all(
+        Object.entries(dictionaries).map(([name, bytes]) =>
+          Bun.write(join(webDictionaries, name), bytes),
+        ),
+      );
       await Bun.write(
         join(outdir, 'manifest.json'),
         JSON.stringify({ ...manifest, version: pkg.version, author: pkg.author }, null, 2),

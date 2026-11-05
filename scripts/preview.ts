@@ -18,8 +18,8 @@ const server = Bun.serve({
     }
     if (path === '/content.js') return new Response(Bun.file(join(root, 'dist/web/content.js')));
     if (path === '/kashi.js') return new Response(Bun.file(join(root, 'dist/spicetify/kashi.js')));
-    if (/^\/kuromoji\/dict\/[a-z_]+\.dat\.gz$/.test(path))
-      return new Response(Bun.file(join(root, 'public', path)));
+    if (/^\/kuromoji\/dict\/[a-z_]+\.dat(?:\.packed)?\.gz$/.test(path))
+      return new Response(Bun.file(join(root, 'dist/web', path)));
     return new Response('Not found', { status: 404 });
   },
 });

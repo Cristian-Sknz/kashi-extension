@@ -28,7 +28,7 @@ for (const target of ['web', 'spicetify'])
         reads++;
         if (target === 'spicetify') throw Error('Desktop must work without network.');
         const name = new URL(String(input)).pathname.split('/').pop()!;
-        return new Response(await Bun.file(`public/kuromoji/dict/${name}`).arrayBuffer());
+        return new Response(await Bun.file(`dist/web/kuromoji/dict/${name}`).arrayBuffer());
       },
       chrome: {
         runtime: { getURL: (path: string) => `https://extension.invalid/${path}` },

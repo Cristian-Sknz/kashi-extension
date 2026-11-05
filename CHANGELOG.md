@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026.1105.1
+
+### Smaller downloads
+
+- **Kashi Web** is now 12.10 MB, down from 15.66 MB (23% smaller).
+- **Kashi Spicetify** is now 12.48 MB, down from 16.50 MB (24% smaller). The installed `kashi.js` is 32% smaller.
+- Both packages reconstruct the original Japanese dictionary byte for byte. Conversion still runs offline.
+
+[Installation and update instructions](https://github.com/Cristian-Sknz/kashi-extension#download) · [Full changelog](https://github.com/Cristian-Sknz/kashi-extension/compare/2026.1105.0...2026.1105.1)
+
 ## 2026.1105.0
 
 Kashi is back after more than two years without a release. I used AI to help pick the project back up, update the code for the current Spotify clients, and add regression tests.

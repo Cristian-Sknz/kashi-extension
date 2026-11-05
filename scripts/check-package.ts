@@ -2,6 +2,7 @@ import { join, resolve } from 'node:path';
 import { unzipSync, strFromU8 } from 'fflate';
 import assert from 'node:assert/strict';
 import pkg from '../package.json';
+import { dictionaryAssetName, unpackDictionaryBytes } from '../src/services/dictionary-packing';
 
 const root = resolve(import.meta.dir, '..');
 const web = unzipSync(
@@ -32,16 +33,28 @@ for (const [label, files, entry] of [
   );
   assert(files['LICENSE'] && files['THIRD_PARTY_NOTICES.md']);
 }
-for await (const name of new Bun.Glob('*.gz').scan(join(root, 'public/kuromoji/dict'))) {
-  const original = Buffer.from(
-    await Bun.file(join(root, 'public/kuromoji/dict', name)).arrayBuffer(),
-  );
-  assert.deepEqual(Buffer.from(web[`kuromoji/dict/${name}`]!), original);
+const dictionaryDir = 'kuromoji/dict';
+const desktopCode = strFromU8(desktop['kashi.js']!);
+const expectedAssets = new Set<string>();
+for await (const name of new Bun.Glob('*.gz').scan(join(root, 'public', dictionaryDir))) {
+  const original = await Bun.file(join(root, 'public', dictionaryDir, name)).bytes();
+  const path = `${dictionaryDir}/${dictionaryAssetName(name)}`;
+  expectedAssets.add(path);
+
+  const packaged = web[path];
+  assert(packaged, `Web missing ${path}`);
+  const inflated = Bun.gunzipSync(packaged);
+  const restored = unpackDictionaryBytes(name, new Uint8Array(inflated).buffer);
+  assert.equal(Buffer.compare(Buffer.from(restored), Bun.gunzipSync(original)), 0, name);
   assert(
-    strFromU8(desktop['kashi.js']!).includes(original.toString('base64')),
-    `Desktop missing ${name}`,
+    desktopCode.includes(Buffer.from(packaged).toString('base64')),
+    `Desktop missing matching ${path}`,
   );
 }
+assert.deepEqual(
+  new Set(Object.keys(web).filter(path => path.startsWith(`${dictionaryDir}/`))),
+  expectedAssets,
+);
 console.log(
   'Both ZIPs verified: manifest, entrypoints, licenses, local dictionaries and runtime dependencies.',
 );

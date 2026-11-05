@@ -39,13 +39,15 @@ Bun browser-target ESM builds exporting just the converter, minified without sou
 | aromanize 0.1.5 | 10,338 | 2,895 |
 | es-hangul 2.4.0 | 14,526 | 5,143 |
 
-The replacements are larger; the reason to migrate is the observed conversion behavior and modern package interfaces. No claim is made about the old complete extension bundle, which was not rebuilt. Japanese compressed dictionary resources total 17,791,956 bytes, separately from JavaScript. The desktop build embeds base64 copies, yielding approximately 24 MB of JavaScript. Exact full package sizes are printed by the build/packaging scripts.
+The replacements are larger; the reason to migrate is the observed conversion behavior and modern package interfaces. No claim is made about the old complete extension bundle, which was not rebuilt. The upstream Japanese dictionary occupies 17,791,956 bytes in gzip files. The build groups bytes by column in five fixed-width tables and stores byte differences in four of those tables before recompressing them with gzip. The packaged dictionary occupies 11,947,086 bytes, and both builds reconstruct the original tables after decompression.
+
+Compared with 2026.1105.0, the web ZIP fell from 15,658,323 to 12,098,001 bytes and the Spicetify ZIP from 16,499,459 to 12,482,749 bytes. The self-contained desktop JavaScript fell from 24,330,792 to 16,538,276 bytes.
 
 Local bundle checks observed Japanese initialization/conversion on the order of one to a few seconds (including decoding in the desktop case), but this is not a controlled performance benchmark or a guarantee for Spotify. It initializes only when Japanese conversion is needed and reuses the initialized analyzer afterwards.
 
 ## Browser compatibility adaptation
 
-The old Kuromoji loader couples URL construction to Node `path` and loads through Node/XHR implementations. The build substitutes only the dictionary loader: it preserves the upstream dictionaries/parser, reads packaged web resources or embedded desktop bytes, and decompresses with the native gzip stream API. Both built bundles are tested with actual dictionary files; the desktop check rejects any network fetch.
+The old Kuromoji loader couples URL construction to Node `path` and loads through Node/XHR implementations. The build substitutes only the dictionary loader: it preserves the upstream dictionaries/parser, reads packaged web resources or embedded desktop bytes, and decompresses with the native gzip stream API. Both built bundles are tested with the packaged dictionary. The desktop test rejects network fetches, and the package check compares the reconstructed tables with the original bytes.
 
 Japanese conversion processes Japanese runs separately so tokenization does not insert spaces into non-Japanese words or alter their original symbols. IPADIC marks `其` as unknown in the conventional spelling `其れ`; Kashi normalizes that complete spelling to `それ` for analysis in all three Japanese modes. Bare `其` and other unknown readings are preserved rather than assigned a guessed pronunciation. This lexical correction applies independently of song/track ID. Disabling conversion restores the original spelling.
 
