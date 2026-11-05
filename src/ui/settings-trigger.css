@@ -1,0 +1,33 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  pointer-events: auto;
+}
+button {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 7px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-subdued, #b3b3b3);
+  cursor: pointer;
+}
+button:hover,
+button[aria-expanded='true'] {
+  color: #cfb4ff;
+  background: #ffffff18;
+}
+button:focus-visible {
+  outline: 2px solid #cfb4ff;
+  outline-offset: 2px;
+}
+svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  pointer-events: none;
+}

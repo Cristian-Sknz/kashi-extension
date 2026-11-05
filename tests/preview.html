@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><title>Kashi integration check</title>
+  <style>
+    body {
+      background: #24202e;
+      color: white;
+      font: 18px system-ui;
+      margin: 24px;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+    }
+    section {
+      padding: 30px;
+      background: #5d386b;
+      border-radius: 16px;
+    }
+    section > div {
+      font-size: 36px;
+      padding: 16px;
+      cursor: pointer;
+    }
+    button {
+      padding: 10px;
+      margin: 4px;
+    }
+    p {
+      font-size: 14px;
+      color: #ddd;
+    }
+  </style>
+  <style>
+    body.overlay-test main {
+      isolation: isolate;
+      transform: translateZ(0);
+      pointer-events: none;
+    }
+    body.overlay-test::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      pointer-events: auto;
+    }
+  </style>
+  <style>
+    header {
+      position: relative;
+      z-index: 101;
+      display: flex;
+      justify-content: flex-end;
+      background: #17141f;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    header [data-test-media-actions],
+    header [role='radiogroup'] {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    header button {
+      font: 14px system-ui;
+      color: #eee;
+      background: transparent;
+      border: 0;
+      border-radius: 6px;
+    }
+  </style>
+  <!-- MEDIA_HEADER -->
+  <main>
+    <h1>Kashi integration check</h1>
+    <p>Synthetic Spotify markup — this is a local test page, not Spotify.</p>
+    <button id="rewrite">Simulate Spotify rewrite</button><button id="next">Next test song</button
+    ><button id="remount-header">Remount media header</button><span id="seeks">0 seeks</span>
+    <section style="--lyrics-color-active: #fff"></section>
+  </main>
+  <script>
+    if (new URLSearchParams(location.search).has('overlay'))
+      document.body.classList.add('overlay-test');
+    const songs = [
+      ['かな', '日本語', 'Hello!'],
+      ['한국어!', '호랑이'],
+      ['汉语拼音', '睡着了'],
+      ['р Р п p pop!'],
+    ];
+    let song = 0,
+      seeks = 0;
+    const section = document.querySelector('section');
+    const pristineHeader = document.querySelector('header').cloneNode(true);
+    if (new URLSearchParams(location.search).has('focusguard')) {
+      document.addEventListener(
+        'focusin',
+        event => {
+          const insideHeader = event
+            .composedPath()
+            .some(node => node instanceof HTMLElement && node.tagName === 'HEADER');
+          if (!insideHeader) document.querySelector('header button').focus();
+        },
+        true,
+      );
+    }
+    document.querySelector('#remount-header').onclick = () =>
+      document.querySelector('header').replaceWith(pristineHeader.cloneNode(true));
+    function show() {
+      section.replaceChildren(
+        ...songs[song].map(text => {
+          const line = document.createElement('div');
+          line.dir = 'auto';
+          if (location.pathname !== '/desktop') line.dataset.testid = 'lyrics-line';
+          line.textContent = text;
+          line.onclick = () => {
+            document.querySelector('#seeks').textContent = ++seeks + ' seeks';
+          };
+          return line;
+        }),
+      );
+    }
+    document.querySelector('#rewrite').onclick = () =>
+      [...section.children].forEach((line, i) => {
+        line.firstChild.data = songs[song][i];
+      });
+    document.querySelector('#next').onclick = () => {
+      song = (song + 1) % songs.length;
+      show();
+    };
+    window.chrome = {
+      runtime: { getURL: path => new URL(path, location.origin + '/').href },
+      storage: {
+        local: {
+          get: async key => ({ [key]: JSON.parse(localStorage.getItem('web:' + key) || 'null') }),
+          set: async values =>
+            Object.entries(values).forEach(([key, value]) =>
+              localStorage.setItem('web:' + key, JSON.stringify(value)),
+            ),
+        },
+      },
+    };
+    const listeners = new Set();
+    window.Spicetify = {
+      Player: {
+        addEventListener: (_, callback) => listeners.add(callback),
+        removeEventListener: (_, callback) => listeners.delete(callback),
+      },
+    };
+    show();
+  </script>
+  <script src="BUNDLE_PATH"></script>
+</html>

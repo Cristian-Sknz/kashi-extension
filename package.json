@@ -1,8 +1,8 @@
 {
   "name": "kashi-extension",
   "private": true,
-  "description": "Romanized Lyrics for Spotify",
-  "version": "2022.0524.0",
+  "description": "Local lyric conversion for Spotify Web and desktop",
+  "version": "2026.1105.0",
   "author": "Cristian-SknZ",
   "homepage": "https://github.com/Cristian-Sknz/kashi-extension",
   "license": "MIT",
@@ -10,48 +10,35 @@
     "url": "https://github.com/Cristian-Sknz/kashi-extension.git",
     "type": "git"
   },
+  "packageManager": "bun@1.4.2",
   "scripts": {
-    "build": "webpack --config webpack/webpack.production.js",
-    "watch": "webpack -w --config webpack/webpack.development.js"
+    "build": "bun scripts/build.ts",
+    "build:web": "bun scripts/build.ts web",
+    "build:desktop": "bun scripts/build.ts desktop",
+    "watch:web": "bun scripts/build.ts web --watch",
+    "watch": "bun run watch:web",
+    "package": "bun scripts/package.ts",
+    "check:package": "bun scripts/check-package.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.185",
-    "@types/pinyin": "^2.10.0",
-    "@types/react": "^18.0.9",
-    "@types/react-dom": "^18.0.4",
-    "copy-webpack-plugin": "^10.2.4",
-    "generate-json-webpack-plugin": "^2.0.0",
-    "path-browserify": "^1.0.1",
-    "ts-loader": "^4.0.1",
-    "typescript": "^3.8.0",
-    "webpack": "^5.72.1",
-    "webpack-cli": "^4.9.2",
-    "zip-webpack-plugin": "^4.0.1"
+    "@types/bun": "1.4.4",
+    "@types/chrome": "0.3.7",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "fflate": "0.8.3",
+    "happy-dom": "21.0.4",
+    "typescript": "7.0.2"
   },
   "dependencies": {
-    "@emotion/css": "^11.9.0",
-    "@emotion/react": "^11.9.0",
-    "@emotion/styled": "^11.8.1",
-    "aromanize": "^0.1.5",
-    "axios": "^0.27.2",
-    "cyrillic-to-translit-js": "^3.2.1",
-    "framer-motion": "^6.3.3",
-    "kuroshiro": "^1.2.0",
-    "kuroshiro-analyzer-kuromoji": "^1.1.0",
-    "pinyin": "^2.11.2",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "cyrillic-to-translit-js": "3.2.1",
+    "es-hangul": "2.4.0",
+    "kuromoji": "0.1.2",
+    "kuroshiro": "1.2.1",
+    "kuroshiro-analyzer-kuromoji": "1.1.0",
+    "pinyin-pro": "3.29.5",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   }
 }

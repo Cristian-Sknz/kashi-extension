@@ -3,8 +3,15 @@ declare module 'kuroshiro-analyzer-kuromoji' {
 
   type KuromojiAnalyzerOptions = {
     dictPath: string;
-  }
+  };
+  export type KuromojiToken = {
+    surface_form: string;
+    reading?: string;
+    pronunciation?: string;
+  };
   export default class KuromojiAnalyzer implements KuroshiroAnalyzer {
-    constructor(options?: KuromojiAnalyzerOptions)
+    constructor(options?: KuromojiAnalyzerOptions);
+    init(): Promise<void>;
+    parse(text?: string): Promise<KuromojiToken[]>;
   }
 }

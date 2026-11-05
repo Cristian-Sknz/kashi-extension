@@ -1,15 +1,17 @@
 {
   "compilerOptions": {
-    "jsx": "react",
-    "allowSyntheticDefaultImports": true,
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "jsx": "react-jsx",
     "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "lib": ["es2019", "dom"],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "outDir": "dist/js",
-    "rootDir": "src",
-    "sourceMap": true,
-    "target": "es2019"
-  }
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": ["bun", "chrome"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "scripts/**/*.ts", "tests/**/*.ts"]
 }
